@@ -2,23 +2,47 @@ import express from "express";
 import { createServer } from "http";
 import path from "path";
 import { fileURLToPath } from "url";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const NOTIFY_TO = "k.umezu@orb-inc.co.jp";
 
-function createTransporter() {
-  return nodemailer.createTransport({
-    host: process.env.SMTP_HOST || "smtp.gmail.com",
-    port: Number(process.env.SMTP_PORT) || 587,
-    secure: process.env.SMTP_SECURE === "true",
-    auth: {
-      user: process.env.SMTP_USER || "",
-      pass: process.env.SMTP_PASS || "",
-    },
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+const FROM_EMAIL =
+  process.env.RESEND_FROM ||
+  "orbコーポレートサイト <onboarding@resend.dev>";
+
+async function sendEmail({
+  subject,
+  text,
+}: {
+  subject: string;
+  text: string;
+}) {
+  const { error } = await resend.emails.send({
+    from: FROM_EMAIL,
+    to: [NOTIFY_TO],
+    subject,
+    html: `<pre style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; white-space: pre-wrap; line-height: 1.7;">${escapeHtml(
+      text,
+    )}</pre>`,
   });
+
+  if (error) {
+    throw error;
+  }
+}
+
+function escapeHtml(text: string) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 async function startServer() {
@@ -29,24 +53,24 @@ async function startServer() {
 
   // ── お問い合わせ送信 ──────────────────────────────
   app.post("/api/contact", async (req, res) => {
-    const { inquiryType, company, name, email, phone, message } = req.body as Record<string, string>;
+    const { inquiryType, company, name, email, phone, message } =
+      req.body as Record<string, string>;
+
     try {
-      const transporter = createTransporter();
-      await transporter.sendMail({
-        from: `"orbコーポレートサイト" <${process.env.SMTP_USER}>`,
-        to: NOTIFY_TO,
+      await sendEmail({
         subject: `【お問い合わせ】${inquiryType} - ${company}`,
         text: [
-          `【お問い合わせ種別】${inquiryType}`,
-          `【法人名/事務所名】${company}`,
-          `【お名前】${name}`,
-          `【メールアドレス】${email}`,
+          `【お問い合わせ種別】${inquiryType || "未入力"}`,
+          `【法人名/事務所名】${company || "未入力"}`,
+          `【お名前】${name || "未入力"}`,
+          `【メールアドレス】${email || "未入力"}`,
           `【電話番号】${phone || "未入力"}`,
           "",
-          `【お問い合わせ内容】`,
-          message,
+          "【お問い合わせ内容】",
+          message || "未入力",
         ].join("\n"),
       });
+
       res.json({ ok: true });
     } catch (err) {
       console.error("contact mail error:", err);
@@ -56,26 +80,35 @@ async function startServer() {
 
   // ── 資料ダウンロード / セミナー申し込み送信 ──────
   app.post("/api/lead", async (req, res) => {
-    const { variant, itemTitle, company, lastName, firstName, phone, email, position, purpose } =
-      req.body as Record<string, string>;
+    const {
+      variant,
+      itemTitle,
+      company,
+      lastName,
+      firstName,
+      phone,
+      email,
+      position,
+      purpose,
+    } = req.body as Record<string, string>;
+
     const label = variant === "seminar" ? "セミナー申し込み" : "資料ダウンロード";
+
     try {
-      const transporter = createTransporter();
-      await transporter.sendMail({
-        from: `"orbコーポレートサイト" <${process.env.SMTP_USER}>`,
-        to: NOTIFY_TO,
-        subject: `【${label}】${itemTitle} - ${company}`,
+      await sendEmail({
+        subject: `【${label}】${itemTitle || "未入力"} - ${company || "未入力"}`,
         text: [
           `【種別】${label}`,
-          `【対象】${itemTitle}`,
-          `【会社名】${company}`,
-          `【氏名】${lastName} ${firstName}`,
-          `【メールアドレス】${email}`,
-          `【電話番号】${phone}`,
+          `【対象】${itemTitle || "未入力"}`,
+          `【会社名】${company || "未入力"}`,
+          `【氏名】${lastName || ""} ${firstName || ""}`.trim() || "未入力",
+          `【メールアドレス】${email || "未入力"}`,
+          `【電話番号】${phone || "未入力"}`,
           `【役職】${position || "未入力"}`,
           `【${variant === "seminar" ? "参加目的" : "興味テーマ"}】${purpose || "未入力"}`,
         ].join("\n"),
       });
+
       res.json({ ok: true });
     } catch (err) {
       console.error("lead mail error:", err);
@@ -86,24 +119,32 @@ async function startServer() {
   // ── サービスページ資料DL（StepFormCard）送信 ──────
   app.post("/api/step-form", async (req, res) => {
     const { serviceTitle, email, position, stage, company, name, themes, message } =
-      req.body as { serviceTitle?: string; email: string; position: string; stage: string; company: string; name: string; themes: string[]; message: string };
+      req.body as {
+        serviceTitle?: string;
+        email: string;
+        position: string;
+        stage: string;
+        company: string;
+        name: string;
+        themes: string[];
+        message: string;
+      };
+
     try {
-      const transporter = createTransporter();
-      await transporter.sendMail({
-        from: `"orbコーポレートサイト" <${process.env.SMTP_USER}>`,
-        to: NOTIFY_TO,
-        subject: `【資料ダウンロード】${serviceTitle || "サービス資料"} - ${company}`,
+      await sendEmail({
+        subject: `【資料ダウンロード】${serviceTitle || "サービス資料"} - ${company || "未入力"}`,
         text: [
           `【対象サービス】${serviceTitle || "サービス資料"}`,
-          `【会社名】${company}`,
-          `【お名前】${name}`,
-          `【メールアドレス】${email}`,
-          `【役職】${position}`,
-          `【検討段階】${stage}`,
-          `【関心テーマ】${themes?.join("、") || "未選択"}`,
+          `【会社名】${company || "未入力"}`,
+          `【お名前】${name || "未入力"}`,
+          `【メールアドレス】${email || "未入力"}`,
+          `【役職】${position || "未入力"}`,
+          `【検討段階】${stage || "未入力"}`,
+          `【関心テーマ】${themes?.length ? themes.join("、") : "未選択"}`,
           `【ご質問・ご要望】${message || "未入力"}`,
         ].join("\n"),
       });
+
       res.json({ ok: true });
     } catch (err) {
       console.error("step-form mail error:", err);
