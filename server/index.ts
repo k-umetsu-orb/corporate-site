@@ -15,16 +15,28 @@ const FROM_EMAIL =
   process.env.RESEND_FROM ||
   "orbコーポレートサイト <onboarding@resend.dev>";
 
+function escapeHtml(text: string) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
 async function sendEmail({
   subject,
   text,
+  replyTo,
 }: {
   subject: string;
   text: string;
+  replyTo?: string;
 }) {
   const { error } = await resend.emails.send({
     from: FROM_EMAIL,
     to: [NOTIFY_TO],
+    reply_to: replyTo,
     subject,
     html: `<pre style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; white-space: pre-wrap; line-height: 1.7;">${escapeHtml(
       text,
@@ -34,15 +46,6 @@ async function sendEmail({
   if (error) {
     throw error;
   }
-}
-
-function escapeHtml(text: string) {
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
 }
 
 async function startServer() {
@@ -58,7 +61,8 @@ async function startServer() {
 
     try {
       await sendEmail({
-        subject: `【お問い合わせ】${inquiryType} - ${company}`,
+        subject: `【お問い合わせ】${inquiryType || "未入力"} - ${company || "未入力"}`,
+        replyTo: email,
         text: [
           `【お問い合わせ種別】${inquiryType || "未入力"}`,
           `【法人名/事務所名】${company || "未入力"}`,
@@ -97,11 +101,12 @@ async function startServer() {
     try {
       await sendEmail({
         subject: `【${label}】${itemTitle || "未入力"} - ${company || "未入力"}`,
+        replyTo: email,
         text: [
           `【種別】${label}`,
           `【対象】${itemTitle || "未入力"}`,
           `【会社名】${company || "未入力"}`,
-          `【氏名】${lastName || ""} ${firstName || ""}`.trim() || "未入力",
+          `【氏名】${`${lastName || ""} ${firstName || ""}`.trim() || "未入力"}`,
           `【メールアドレス】${email || "未入力"}`,
           `【電話番号】${phone || "未入力"}`,
           `【役職】${position || "未入力"}`,
@@ -133,6 +138,7 @@ async function startServer() {
     try {
       await sendEmail({
         subject: `【資料ダウンロード】${serviceTitle || "サービス資料"} - ${company || "未入力"}`,
+        replyTo: email,
         text: [
           `【対象サービス】${serviceTitle || "サービス資料"}`,
           `【会社名】${company || "未入力"}`,
