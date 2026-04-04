@@ -25,17 +25,19 @@ function escapeHtml(text: string) {
 }
 
 async function sendEmail({
+  to,
   subject,
   text,
   replyTo,
 }: {
+  to: string | string[];
   subject: string;
   text: string;
   replyTo?: string;
 }) {
   const { error } = await resend.emails.send({
     from: FROM_EMAIL,
-    to: [NOTIFY_TO],
+    to: Array.isArray(to) ? to : [to],
     reply_to: replyTo,
     subject,
     html: `<pre style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; white-space: pre-wrap; line-height: 1.7;">${escapeHtml(
@@ -46,6 +48,39 @@ async function sendEmail({
   if (error) {
     throw error;
   }
+}
+
+async function sendInternalNotification({
+  subject,
+  text,
+  replyTo,
+}: {
+  subject: string;
+  text: string;
+  replyTo?: string;
+}) {
+  await sendEmail({
+    to: NOTIFY_TO,
+    subject,
+    text,
+    replyTo,
+  });
+}
+
+async function sendAutoReply({
+  to,
+  subject,
+  text,
+}: {
+  to: string;
+  subject: string;
+  text: string;
+}) {
+  await sendEmail({
+    to,
+    subject,
+    text,
+  });
 }
 
 async function startServer() {
@@ -60,7 +95,8 @@ async function startServer() {
       req.body as Record<string, string>;
 
     try {
-      await sendEmail({
+      // 1通目: 社内通知
+      await sendInternalNotification({
         subject: `【お問い合わせ】${inquiryType || "未入力"} - ${company || "未入力"}`,
         replyTo: email,
         text: [
@@ -74,6 +110,34 @@ async function startServer() {
           message || "未入力",
         ].join("\n"),
       });
+
+      // 2通目: お客さんへの自動返信
+      if (email) {
+        await sendAutoReply({
+          to: email,
+          subject: "【自動返信】お問い合わせありがとうございます",
+          text: [
+            `${name || "お客様"}`,
+            "",
+            "このたびはお問い合わせいただきありがとうございます。",
+            "以下の内容で受け付けいたしました。",
+            "",
+            `【お問い合わせ種別】${inquiryType || "未入力"}`,
+            `【法人名/事務所名】${company || "未入力"}`,
+            `【お名前】${name || "未入力"}`,
+            `【メールアドレス】${email || "未入力"}`,
+            `【電話番号】${phone || "未入力"}`,
+            "",
+            "【お問い合わせ内容】",
+            message || "未入力",
+            "",
+            "内容を確認のうえ、担当者よりご連絡いたします。",
+            "しばらくお待ちください。",
+            "",
+            "※本メールは自動送信です。",
+          ].join("\n"),
+        });
+      }
 
       res.json({ ok: true });
     } catch (err) {
@@ -97,22 +161,51 @@ async function startServer() {
     } = req.body as Record<string, string>;
 
     const label = variant === "seminar" ? "セミナー申し込み" : "資料ダウンロード";
+    const fullName = `${lastName || ""} ${firstName || ""}`.trim() || "未入力";
 
     try {
-      await sendEmail({
+      // 1通目: 社内通知
+      await sendInternalNotification({
         subject: `【${label}】${itemTitle || "未入力"} - ${company || "未入力"}`,
         replyTo: email,
         text: [
           `【種別】${label}`,
           `【対象】${itemTitle || "未入力"}`,
           `【会社名】${company || "未入力"}`,
-          `【氏名】${`${lastName || ""} ${firstName || ""}`.trim() || "未入力"}`,
+          `【氏名】${fullName}`,
           `【メールアドレス】${email || "未入力"}`,
           `【電話番号】${phone || "未入力"}`,
           `【役職】${position || "未入力"}`,
           `【${variant === "seminar" ? "参加目的" : "興味テーマ"}】${purpose || "未入力"}`,
         ].join("\n"),
       });
+
+      // 2通目: お客さんへの自動返信
+      if (email) {
+        await sendAutoReply({
+          to: email,
+          subject: `【自動返信】${label}を受け付けました`,
+          text: [
+            `${fullName}`,
+            "",
+            `${label}ありがとうございます。`,
+            "以下の内容で受け付けいたしました。",
+            "",
+            `【種別】${label}`,
+            `【対象】${itemTitle || "未入力"}`,
+            `【会社名】${company || "未入力"}`,
+            `【氏名】${fullName}`,
+            `【メールアドレス】${email || "未入力"}`,
+            `【電話番号】${phone || "未入力"}`,
+            `【役職】${position || "未入力"}`,
+            `【${variant === "seminar" ? "参加目的" : "興味テーマ"}】${purpose || "未入力"}`,
+            "",
+            "内容を確認のうえ、必要に応じて担当者よりご連絡いたします。",
+            "",
+            "※本メールは自動送信です。",
+          ].join("\n"),
+        });
+      }
 
       res.json({ ok: true });
     } catch (err) {
@@ -136,7 +229,8 @@ async function startServer() {
       };
 
     try {
-      await sendEmail({
+      // 1通目: 社内通知
+      await sendInternalNotification({
         subject: `【資料ダウンロード】${serviceTitle || "サービス資料"} - ${company || "未入力"}`,
         replyTo: email,
         text: [
@@ -150,6 +244,33 @@ async function startServer() {
           `【ご質問・ご要望】${message || "未入力"}`,
         ].join("\n"),
       });
+
+      // 2通目: お客さんへの自動返信
+      if (email) {
+        await sendAutoReply({
+          to: email,
+          subject: "【自動返信】資料ダウンロードを受け付けました",
+          text: [
+            `${name || "お客様"}`,
+            "",
+            "資料ダウンロードありがとうございます。",
+            "以下の内容で受け付けいたしました。",
+            "",
+            `【対象サービス】${serviceTitle || "サービス資料"}`,
+            `【会社名】${company || "未入力"}`,
+            `【お名前】${name || "未入力"}`,
+            `【メールアドレス】${email || "未入力"}`,
+            `【役職】${position || "未入力"}`,
+            `【検討段階】${stage || "未入力"}`,
+            `【関心テーマ】${themes?.length ? themes.join("、") : "未選択"}`,
+            `【ご質問・ご要望】${message || "未入力"}`,
+            "",
+            "必要に応じて担当者よりご連絡いたします。",
+            "",
+            "※本メールは自動送信です。",
+          ].join("\n"),
+        });
+      }
 
       res.json({ ok: true });
     } catch (err) {
