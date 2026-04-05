@@ -187,7 +187,11 @@ export default function Home() {
         <div className="container">
           <AnimatedSection>
             <div className="flex items-end justify-between mb-10 md:mb-14">
-              <SectionHeading label="Works" title="支援実績" description="クライアント企業様への具体的な支援事例をご紹介します。"/>
+              <SectionHeading
+                label="Works"
+                title="支援実績"
+                description="会計事務所様とorbの具体的なお取り組み事例をご紹介します。"
+              />
               <Link
                 href="/works"
                 className="hidden md:inline-flex items-center gap-1 text-sm font-medium text-navy hover:gap-2 transition-all"
@@ -213,7 +217,11 @@ export default function Home() {
           <div className="container">
             <AnimatedSection>
               <div className="flex items-end justify-between mb-10 md:mb-14">
-                <SectionHeading label="Seminars" title="開催予定のセミナー" />
+                <SectionHeading
+                  label="Seminars"
+                  title="開催予定のセミナー"
+                  description="会計事務所の営業・採用・AX推進に役立つ無料セミナーを定期開催しています。"
+                />
                 <Link
                   href="/seminar"
                   className="hidden md:inline-flex items-center gap-1 text-sm font-medium text-navy hover:gap-2 transition-all"
