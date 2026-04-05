@@ -7,13 +7,13 @@ import { Resend } from "resend";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const NOTIFY_TO = "no-reply@orb-inc.jp";
+const NOTIFY_TO = "no-reply@orb-inc.co.jp";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 const FROM_EMAIL =
   process.env.RESEND_FROM ||
-  "orbコーポレートサイト <onboarding@resend.dev>";
+  "株式会社orb <no-reply@orb-inc.co.jp>";
 
 function escapeHtml(text: string) {
   return text
