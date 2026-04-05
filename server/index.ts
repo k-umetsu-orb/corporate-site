@@ -1,5 +1,6 @@
 import express from "express";
 import { createServer } from "http";
+import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { Resend } from "resend";
@@ -308,9 +309,97 @@ async function startServer() {
 
   app.use(express.static(staticPath));
 
-  // Handle client-side routing - serve index.html for all routes
-  app.get("*", (_req, res) => {
-    res.sendFile(path.join(staticPath, "index.html"));
+  // ── ページ別 meta タグ定義 ──────────────────────────
+  const SITE_NAME = "orb株式会社";
+  type MetaEntry = { title: string; description: string };
+
+  const staticMeta: Record<string, MetaEntry> = {
+    "/": {
+      title: SITE_NAME,
+      description: "orb株式会社のコーポレートサイトです。会計事務所に特化した営業支援・人材紹介を提供しています。紹介に依存しない営業の仕組みと、優秀な人材を惹きつける採用の仕組みで、貴社の持続的な成長を支援します。",
+    },
+    "/service": {
+      title: `サービス一覧 | ${SITE_NAME}`,
+      description: "会計事務所向けの営業支援・人材紹介サービスの一覧。業界特有の課題を深く理解した専門コンサルタントが、実効性の高い戦略をご提案します。",
+    },
+    "/service/sales-support": {
+      title: `営業支援 | サービス | ${SITE_NAME}`,
+      description: "紹介や顧問契約に依存した経営から脱却し、安定的に新規顧客を獲得する仕組みを構築します。Webマーケティング戦略の立案、リード獲得、提案の標準化まで、一気通貫でサポートします。",
+    },
+    "/service/recruitment-support": {
+      title: `人材紹介 | サービス | ${SITE_NAME}`,
+      description: "採用市場で「選ばれる事務所」になるための最適な人材をご紹介します。求める人材像の明確化から、候補者のご紹介、選考プロセスのサポート、入所後の定着支援まで、トータルでご支援します。",
+    },
+    "/service/ai-transformation-support": {
+      title: `AX支援 | サービス | ${SITE_NAME}`,
+      description: "記帳・仕訳の自動化からクライアント対応の効率化まで、会計事務所に特化したAI活用戦略を設計・実行します。ツール選定から導入・定着支援まで一気通貫でサポートします。",
+    },
+    "/works": {
+      title: `支援実績 | ${SITE_NAME}`,
+      description: "会計事務所向けの営業支援・人材紹介の実績をご紹介します。",
+    },
+    "/news": {
+      title: `お知らせ | ${SITE_NAME}`,
+      description: "orbからのお知らせ。セミナー情報、メディア掲載、プレスリリースなどをお届けします。",
+    },
+    "/seminar": {
+      title: `セミナー | ${SITE_NAME}`,
+      description: "会計事務所向けの営業・採用に関するセミナー情報。無料で参加いただけます。",
+    },
+    "/download": {
+      title: `資料ダウンロード | ${SITE_NAME}`,
+      description: "会計事務所の経営に役立つ資料を無料でダウンロード。サービス概要資料やお役立ち資料をご用意しています。",
+    },
+    "/company": {
+      title: `会社概要 | ${SITE_NAME}`,
+      description: "orb株式会社の会社概要。会計事務所向けに営業支援・人材紹介を提供するコンサルティングファームです。",
+    },
+    "/company/message": {
+      title: `代表メッセージ | ${SITE_NAME}`,
+      description: "orb株式会社代表からのメッセージ。会計事務所の成長を仕組みで支えるという想いをお伝えします。",
+    },
+    "/contact": {
+      title: `お問い合わせ | ${SITE_NAME}`,
+      description: "会計事務所向け営業支援・人材紹介に関するお問い合わせ・無料相談のお申し込みはこちらから。",
+    },
+    "/privacy-policy": {
+      title: `プライバシーポリシー | ${SITE_NAME}`,
+      description: "orb株式会社の個人情報保護方針。お客様の個人情報の取り扱いについて定めています。",
+    },
+  };
+
+  function getPageMeta(reqPath: string): MetaEntry {
+    // 完全一致
+    if (staticMeta[reqPath]) return staticMeta[reqPath];
+    // /works/:slug
+    if (reqPath.startsWith("/works/")) return { title: `支援実績 | ${SITE_NAME}`, description: "会計事務所向け支援実績の詳細です。" };
+    // /news/:id
+    if (reqPath.startsWith("/news/")) return { title: `お知らせ | ${SITE_NAME}`, description: "orbからのお知らせです。" };
+    // /seminar/:id
+    if (reqPath.startsWith("/seminar/")) return { title: `セミナー | ${SITE_NAME}`, description: "会計事務所向けセミナーの詳細です。" };
+    // /download/:slug
+    if (reqPath.startsWith("/download/")) return { title: `資料ダウンロード | ${SITE_NAME}`, description: "会計事務所の経営に役立つ資料をダウンロードいただけます。" };
+    // デフォルト
+    return { title: SITE_NAME, description: "orb株式会社のコーポレートサイトです。" };
+  }
+
+  // Handle client-side routing - serve index.html with page-specific meta tags
+  const indexHtmlPath = path.join(staticPath, "index.html");
+  app.get("*", (req, res) => {
+    try {
+      const html = fs.readFileSync(indexHtmlPath, "utf-8");
+      const { title, description } = getPageMeta(req.path);
+      const injected = html
+        .replace(/<title>[^<]*<\/title>/, `<title>${title}</title>`)
+        .replace(
+          /<meta name="description" content="[^"]*"/,
+          `<meta name="description" content="${description}"`
+        );
+      res.setHeader("Content-Type", "text/html");
+      res.send(injected);
+    } catch {
+      res.sendFile(indexHtmlPath);
+    }
   });
 
   const port = process.env.PORT || 3000;
