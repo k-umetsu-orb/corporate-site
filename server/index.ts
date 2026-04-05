@@ -316,11 +316,11 @@ async function startServer() {
   const staticMeta: Record<string, MetaEntry> = {
     "/": {
       title: SITE_NAME,
-      description: "orb株式会社のコーポレートサイトです。会計事務所に特化した営業支援・人材紹介を提供しています。紹介に依存しない営業の仕組みと、優秀な人材を惹きつける採用の仕組みで、貴社の持続的な成長を支援します。",
+      description: "orb株式会社のコーポレートサイトです。会計事務所に特化した営業支援・人材紹介・AX支援を提供しています。紹介に依存しない営業の仕組みと、優秀な人材を惹きつける採用の仕組みで、貴社の持続的な成長を支援します。",
     },
     "/service": {
       title: `サービス一覧 | ${SITE_NAME}`,
-      description: "会計事務所向けの営業支援・人材紹介サービスの一覧。業界特有の課題を深く理解した専門コンサルタントが、実効性の高い戦略をご提案します。",
+      description: "会計事務所向けの営業支援・人材紹介・AX支援サービスの一覧。業界特有の課題を深く理解した専門コンサルタントが、実効性の高い戦略をご提案します。",
     },
     "/service/sales-support": {
       title: `営業支援 | サービス | ${SITE_NAME}`,
@@ -336,7 +336,7 @@ async function startServer() {
     },
     "/works": {
       title: `支援実績 | ${SITE_NAME}`,
-      description: "会計事務所向けの営業支援・人材紹介の実績をご紹介します。",
+      description: "会計事務所向けの営業支援・人材紹介・AX支援の実績をご紹介します。",
     },
     "/news": {
       title: `お知らせ | ${SITE_NAME}`,
@@ -352,7 +352,7 @@ async function startServer() {
     },
     "/company": {
       title: `会社概要 | ${SITE_NAME}`,
-      description: "orb株式会社の会社概要。会計事務所向けに営業支援・人材紹介を提供するコンサルティングファームです。",
+      description: "orb株式会社の会社概要。会計事務所向けに営業支援・人材紹介・AX支援を提供するコンサルティングファームです。",
     },
     "/company/message": {
       title: `代表メッセージ | ${SITE_NAME}`,
@@ -360,7 +360,7 @@ async function startServer() {
     },
     "/contact": {
       title: `お問い合わせ | ${SITE_NAME}`,
-      description: "会計事務所向け営業支援・人材紹介に関するお問い合わせ・無料相談のお申し込みはこちらから。",
+      description: "会計事務所向け営業支援・人材紹介・AX支援に関するお問い合わせ・無料相談のお申し込みはこちらから。",
     },
     "/privacy-policy": {
       title: `プライバシーポリシー | ${SITE_NAME}`,

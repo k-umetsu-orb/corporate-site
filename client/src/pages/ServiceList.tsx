@@ -31,7 +31,7 @@ const serviceNumbers: Record<string, string> = {
 export default function ServiceList() {
   useSEO({
     title: "サービス一覧",
-    description: "会計事務所向けの営業支援・人材紹介サービスの一覧。業界特有の課題を深く理解した専門コンサルタントが、実効性の高い戦略をご提案します。",
+    description: "会計事務所向けの営業支援・人材紹介・AX支援サービスの一覧。業界特有の課題を深く理解した専門コンサルタントが、実効性の高い戦略をご提案します。",
     path: "/service",
   });
 

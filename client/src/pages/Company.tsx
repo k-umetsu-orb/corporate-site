@@ -45,7 +45,7 @@ const values = [
 export default function Company() {
   useSEO({
     title: "会社概要",
-    description: "orb株式会社の会社概要。会計事務所向けに営業支援・人材紹介を提供するコンサルティングファームです。",
+    description: "orb株式会社の会社概要。会計事務所向けに営業支援・人材紹介・AX支援を提供するコンサルティングファームです。",
     path: "/company",
   });
 

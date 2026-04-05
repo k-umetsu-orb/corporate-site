@@ -24,7 +24,7 @@ export const organizationSchema = {
   "@type": "Organization",
   name: "orb RESOURCE&TECH",
   url: "https://xxxx.co.jp",
-  description: "会計事務所向けに営業支援・人材紹介を提供するコンサルティングファーム",
+  description: "会計事務所向けに営業支援・人材紹介・AX支援を提供するコンサルティングファーム",
   address: {
     "@type": "PostalAddress",
     addressLocality: "東京都",

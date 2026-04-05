@@ -12,7 +12,7 @@ import { useSEO } from "@/hooks/useSEO";
 export default function WorksList() {
   useSEO({
     title: "支援実績",
-    description: "会計事務所向けの営業支援・人材紹介の実績をご紹介します。",
+    description: "会計事務所向けの営業支援・人材紹介・AX支援の実績をご紹介します。",
     path: "/works",
   });
   return (

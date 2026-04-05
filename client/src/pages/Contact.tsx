@@ -49,7 +49,7 @@ export default function Contact() {
 
   useSEO({
     title: "お問い合わせ",
-    description: "会計事務所向け営業支援・人材紹介に関するお問い合わせ・無料相談のお申し込みはこちらから。",
+    description: "会計事務所向け営業支援・人材紹介・AX支援に関するお問い合わせ・無料相談のお申し込みはこちらから。",
     path: "/contact",
   });
 

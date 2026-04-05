@@ -27,7 +27,7 @@ export default function Home() {
 
   useSEO({
     title: "orb株式会社",
-    description: "orb株式会社のコーポレートサイトです。会計事務所に特化した営業支援・人材紹介を提供しています。紹介に依存しない営業の仕組みと、優秀な人材を惹きつける採用の仕組みで、貴社の持続的な成長を支援します。",
+    description: "orb株式会社のコーポレートサイトです。会計事務所に特化した営業支援・人材紹介・AX支援を提供しています。紹介に依存しない営業の仕組みと、優秀な人材を惹きつける採用の仕組みで、貴社の持続的な成長を支援します。",
     path: "/",
   });
 
@@ -187,7 +187,7 @@ export default function Home() {
         <div className="container">
           <AnimatedSection>
             <div className="flex items-end justify-between mb-10 md:mb-14">
-              <SectionHeading label="Works" title="支援実績" />
+              <SectionHeading label="Works" title="支援実績" description="クライアント企業様への具体的な支援事例をご紹介します。"/>
               <Link
                 href="/works"
                 className="hidden md:inline-flex items-center gap-1 text-sm font-medium text-navy hover:gap-2 transition-all"
