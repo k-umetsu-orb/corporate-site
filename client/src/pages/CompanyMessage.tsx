@@ -33,9 +33,9 @@ export default function CompanyMessage() {
           <div className="grid md:grid-cols-[2fr_3fr] gap-12 md:gap-16 items-start">
 
             {/* ── 左: 写真（PCでは sticky） ── */}
-              <div className="overflow-hidden rounded-sm shadow-md border border-border" style={{ aspectRatio: "2264 / 3007" }}>
+              <div className="overflow-hidden rounded-sm" style={{ aspectRatio: "2264 / 3007" }}>
                 <img
-                  src="/ceo-photo.jpg"
+                  src="/ceo-photo 6.png"
                   alt="代表取締役社長 檜森 大河"
                   className="w-full h-full object-cover object-top"
                 />
@@ -60,7 +60,7 @@ export default function CompanyMessage() {
               <AnimatedSection>
                 <div className="space-y-6 text-sm md:text-base text-muted-foreground leading-[1.9]">
                   <p>
-                    会計事務所は中小企業の経営を支える重要な存在です。一方で、「顧客獲得が紹介に依存している」「採用が難しい」といった構造的な課題を抱えているのも事実です。
+                    会計事務所は中小企業の経営を支える重要な存在です。一方で、「新規顧客の獲得コストが高すぎる」「採用が難しい」といった構造的な課題を抱えているのも事実です。
                   </p>
                   <p>
                     私自身、事業立ち上げや組織づくりに向き合う中で、1人の専門性や想いだけでは持続的な成長は実現できず、それを支える仕組みの重要性を強く実感してきました。会計事務所の現場でも同様に個人の力に依存し、組織として再現性を持てずにいるケースが多く見られます。
