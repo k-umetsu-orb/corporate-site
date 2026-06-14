@@ -27,6 +27,18 @@ const routes = [...staticRoutes, ...dynamicRoutes];
 // そのため、ビルド前のシェル内容を同期的に保存しておき、最後に確実に書き込む。
 const shellContent = fs.readFileSync(INDEX_HTML, "utf-8");
 
+// puppeteer 同梱の Chromium は Render 等の最小構成 Linux 環境では共有ライブラリ不足で
+// 起動できないことが多いため、依存ライブラリを内蔵した @sparticuz/chromium を使う。
+// ローカル開発で PUPPETEER_EXECUTABLE_PATH (インストール済みChrome) が指定されている場合はそれを優先する。
+let puppeteerExecutablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+let puppeteerArgs = ["--no-sandbox", "--disable-setuid-sandbox"];
+
+if (!puppeteerExecutablePath) {
+  const chromium = (await import("@sparticuz/chromium")).default;
+  puppeteerExecutablePath = await chromium.executablePath();
+  puppeteerArgs = chromium.args;
+}
+
 try {
   // react-snap が source/index.html を 200.html として退避してからクロールする
   // (Express の catch-all は 200.html を 404 等のフォールバックに使う)
@@ -36,7 +48,8 @@ try {
     include: routes,
     crawl: false,
     minifyHtml: false,
-    puppeteerArgs: ["--no-sandbox", "--disable-setuid-sandbox"],
+    puppeteerExecutablePath,
+    puppeteerArgs,
   });
   console.log(`[prerender] done: ${routes.length} routes prerendered`);
 } catch (err) {
