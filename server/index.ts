@@ -4,6 +4,7 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { Resend } from "resend";
+import { newsItems } from "../client/src/lib/data";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -328,15 +329,15 @@ async function startServer() {
       description: "会計事務所向けの営業支援・人材紹介・AX支援サービスの一覧。業界特有の課題を深く理解した専門コンサルタントが、実効性の高い戦略をご提案します。",
     },
     "/service/sales-support": {
-      title: `営業支援 | サービス | ${SITE_NAME}`,
+      title: `営業支援 | ${SITE_NAME}`,
       description: "紹介や顧問契約に依存した経営から脱却し、安定的に新規顧客を獲得する仕組みを構築します。Webマーケティング戦略の立案、リード獲得、提案の標準化まで、一気通貫でサポートします。",
     },
     "/service/recruitment-support": {
-      title: `人材紹介 | サービス | ${SITE_NAME}`,
+      title: `人材紹介 | ${SITE_NAME}`,
       description: "採用市場で「選ばれる事務所」になるための最適な人材をご紹介します。求める人材像の明確化から、候補者のご紹介、選考プロセスのサポート、入所後の定着支援まで、トータルでご支援します。",
     },
     "/service/ai-transformation-support": {
-      title: `AX支援 | サービス | ${SITE_NAME}`,
+      title: `AX支援 | ${SITE_NAME}`,
       description: "記帳・仕訳の自動化からクライアント対応の効率化まで、会計事務所に特化したAI活用戦略を設計・実行します。ツール選定から導入・定着支援まで一気通貫でサポートします。",
     },
     "/works": {
@@ -383,6 +384,8 @@ async function startServer() {
     // /works/:slug
     if (reqPath.startsWith("/works/")) return { title: `支援実績 | ${SITE_NAME}`, description: "会計事務所向け支援実績の詳細です。" };
     // /news/:id
+    const news = newsItems.find((n) => reqPath === `/news/${n.id}`);
+    if (news) return { title: `${news.title} | ${SITE_NAME}`, description: news.title };
     if (reqPath.startsWith("/news/")) return { title: `お知らせ | ${SITE_NAME}`, description: "orbからのお知らせです。" };
     // /seminar/:id
     if (reqPath.startsWith("/seminar/")) return { title: `セミナー | ${SITE_NAME}`, description: "会計事務所向けセミナーの詳細です。" };

@@ -22,7 +22,7 @@ export default function NewsDetail() {
   const news = newsItems.find((n) => n.id === id);
 
   useSEO({
-    title: news ? `${news.title} | お知らせ` : "お知らせ",
+    title: news ? news.title : "お知らせ",
     description: news ? news.title : "",
     path: `/news/${id}`,
   });

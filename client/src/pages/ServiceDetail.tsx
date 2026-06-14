@@ -83,7 +83,7 @@ export default function ServiceDetail() {
   );
 
   useSEO({
-    title: service ? `${service.title} | サービス` : "サービス詳細",
+    title: service ? service.title : "サービス詳細",
     description: service ? service.description : "",
     path: `/service/${slug}`,
   });
