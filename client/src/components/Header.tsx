@@ -22,14 +22,7 @@ const navItems = [
   { label: "セミナー", href: "/seminar" },
   { label: "資料ダウンロード", href: "/download" },
   { label: "お知らせ", href: "/news" },
-  {
-    label: "会社情報",
-    href: "/company",
-    children: [
-      { label: "会社概要", href: "/company" },
-      { label: "代表メッセージ", href: "/company/message" },
-    ],
-  },
+  { label: "会社概要", href: "/company" },
 ];
 
 export default function Header() {
