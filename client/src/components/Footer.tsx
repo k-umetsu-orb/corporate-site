@@ -57,12 +57,11 @@ export default function Footer() {
         </div>
 
         <div className="mt-16 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4">
-          {/* Logo — 余白トリミング: overflow-hidden で中央部分のみ表示 */}
-          <Link href="/" className="flex items-center overflow-hidden h-14">
+          <Link href="/" className="flex items-center h-14">
             <img
               src={LOGO_URL}
               alt={SITE_NAME}
-              className="h-[280%] w-auto object-contain brightness-0 invert opacity-70"
+              className="h-[53%] w-auto object-contain brightness-0 invert opacity-70"
             />
           </Link>
           <p className="text-xs text-white/40">

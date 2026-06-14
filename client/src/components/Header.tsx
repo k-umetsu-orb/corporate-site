@@ -58,12 +58,11 @@ export default function Header() {
       }`}
     >
       <div className="container flex items-center justify-between h-16 md:h-20">
-        {/* Logo — 余白トリミング: overflow-hidden で中央部分のみ表示 */}
-        <Link href="/" className="flex items-center shrink-0 overflow-hidden h-14 md:h-16">
+        <Link href="/" className="flex items-center shrink-0 h-14 md:h-16">
           <img
             src={LOGO_URL}
             alt={SITE_NAME}
-            className="h-[280%] w-auto object-contain"
+            className="h-[53%] w-auto object-contain"
           />
         </Link>
 
