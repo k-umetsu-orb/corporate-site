@@ -9,3 +9,4 @@ coverage
 .env.local
 *.log
 *.zip
+.vite
