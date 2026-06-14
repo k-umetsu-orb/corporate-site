@@ -389,7 +389,7 @@ async function startServer() {
   }
 
   // Handle client-side routing - serve index.html with page-specific meta tags
-  const indexHtmlPath = path.join(staticPath, "index.html");
+  const indexHtmlPath = path.join(staticPath, "200.html");
   app.get("*", (req, res) => {
     try {
       const html = fs.readFileSync(indexHtmlPath, "utf-8");
