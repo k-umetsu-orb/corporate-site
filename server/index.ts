@@ -313,7 +313,27 @@ async function startServer() {
       ? path.resolve(__dirname, "public")
       : path.resolve(__dirname, "..", "dist", "public");
 
-  app.use(express.static(staticPath));
+  // ── 末尾スラッシュ付きURLを301でスラッシュなしへ統一 ──────────────
+  // (express.static の自動リダイレクト(スラッシュ付与)とのループを防ぐため redirect: false にし、
+  //  代わりにこのミドルウェアでディレクトリ配下の index.html を直接返す)
+  app.use((req, res, next) => {
+    if (req.path.length > 1 && req.path.endsWith("/")) {
+      const query = req.url.slice(req.path.length);
+      res.redirect(301, req.path.slice(0, -1) + query);
+      return;
+    }
+
+    if (req.path !== "/" && !path.extname(req.path)) {
+      const indexFile = path.join(staticPath, req.path, "index.html");
+      if (fs.existsSync(indexFile)) {
+        return res.sendFile(indexFile);
+      }
+    }
+
+    next();
+  });
+
+  app.use(express.static(staticPath, { redirect: false }));
 
   // ── ページ別 meta タグ定義 ──────────────────────────
   const SITE_NAME = "orb株式会社";
