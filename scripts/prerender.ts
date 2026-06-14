@@ -40,6 +40,44 @@ try {
   }
 }
 
+// react-snap は pageerror 等で shuttingDown になると、以降のルートを
+// 「ファイル書き込みなしでスキップ」したり、レンダリング前の空シェルのまま
+// 書き出したりすることがある。express.static がその壊れたファイルを
+// そのまま返してしまい、catch-all (getPageMeta によるページ別meta注入) を
+// バイパスしてしまうため、ビルド後に各ルートの出力を検証し、
+// 「空」または「シェルと同一（未レンダリング）」なら削除して
+// catch-all へのフォールバックに委ねる。
+const shellContent = fs.existsSync(SHELL_HTML) ? fs.readFileSync(SHELL_HTML, "utf-8") : "";
+
+for (const route of routes) {
+  const outPath =
+    route === "/"
+      ? INDEX_HTML
+      : path.join(DIST_PUBLIC, route, "index.html");
+
+  if (!fs.existsSync(outPath)) {
+    console.log(`[prerender] ${route}: (no file) -> fallback to catch-all`);
+    continue;
+  }
+
+  const content = fs.readFileSync(outPath, "utf-8");
+  const isValid = content.length > 0 && content !== shellContent;
+
+  if (isValid) {
+    console.log(`[prerender] ${route}: ${content.length} bytes (ok)`);
+    continue;
+  }
+
+  console.warn(`[prerender] ${route}: ${content.length} bytes (invalid, removing) -> fallback to catch-all`);
+  fs.rmSync(outPath, { force: true });
+  if (route !== "/") {
+    const dir = path.dirname(outPath);
+    if (fs.existsSync(dir) && fs.readdirSync(dir).length === 0) {
+      fs.rmdirSync(dir);
+    }
+  }
+}
+
 // react-snap が起動するローカルサーバーが crawl 失敗時にも close されず
 // プロセスが終了しないため、明示的に終了する
 process.exit(0);

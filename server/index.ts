@@ -374,6 +374,10 @@ async function startServer() {
   };
 
   function getPageMeta(reqPath: string): MetaEntry {
+    // express.static が空ディレクトリを末尾スラッシュ付きにリダイレクトすることがあるため正規化
+    if (reqPath.length > 1 && reqPath.endsWith("/")) {
+      reqPath = reqPath.slice(0, -1);
+    }
     // 完全一致
     if (staticMeta[reqPath]) return staticMeta[reqPath];
     // /works/:slug
