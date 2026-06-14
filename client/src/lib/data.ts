@@ -529,7 +529,7 @@ export interface NewsItem {
 
 export const newsItems: NewsItem[] = [
   {
-    id: "website-renewal-2025",
+    id: "website-renewal-2026",
     title: "コーポレートサイトをリニューアルしました",
     date: "2025-04-5",
     category: "お知らせ",

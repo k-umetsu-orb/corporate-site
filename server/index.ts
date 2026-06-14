@@ -90,6 +90,11 @@ async function startServer() {
 
   app.use(express.json());
 
+  // ── 旧URLからの301リダイレクト ──────────────────────
+  app.get("/news/website-renewal-2025", (_req, res) => {
+    res.redirect(301, "/news/website-renewal-2026");
+  });
+
   // ── お問い合わせ送信 ──────────────────────────────
   app.post("/api/contact", async (req, res) => {
     const { inquiryType, company, name, email, phone, message } =
