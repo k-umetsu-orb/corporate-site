@@ -164,10 +164,11 @@ export default function Contact() {
                 {/* 電話番号 */}
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
-                    電話番号
+                    電話番号 <span className="text-destructive">*</span>
                   </label>
                   <input
                     type="tel"
+                    required
                     value={form.phone}
                     onChange={set("phone")}
                     placeholder="例：03-1234-5678"
