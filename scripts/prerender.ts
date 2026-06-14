@@ -20,6 +20,13 @@ const dynamicRoutes = [
 
 const routes = [...staticRoutes, ...dynamicRoutes];
 
+// react-snap は run() 内部で index.html -> 200.html を非同期(stream)コピーするが、
+// その完了を待たない。crawl が早期に失敗/終了すると、コピー完了前に
+// process.exit() してしまい 200.html が空ファイルのまま残ることがある
+// (Express の catch-all は 200.html を読むため、空だと全ページが空になる)。
+// そのため、ビルド前のシェル内容を同期的に保存しておき、最後に確実に書き込む。
+const shellContent = fs.readFileSync(INDEX_HTML, "utf-8");
+
 try {
   // react-snap が source/index.html を 200.html として退避してからクロールする
   // (Express の catch-all は 200.html を 404 等のフォールバックに使う)
@@ -34,11 +41,10 @@ try {
   console.log(`[prerender] done: ${routes.length} routes prerendered`);
 } catch (err) {
   console.warn("[prerender] react-snap failed, falling back to CSR-only build:", err);
-  // 200.html 未作成（バリデーション等で早期失敗）の場合のみ、index.html から補完する
-  if (!fs.existsSync(SHELL_HTML)) {
-    fs.copyFileSync(INDEX_HTML, SHELL_HTML);
-  }
 }
+
+// 200.html を確実にビルド前のシェル内容で上書きする（上記の非同期コピー漏れ対策）
+fs.writeFileSync(SHELL_HTML, shellContent);
 
 // react-snap は pageerror 等で shuttingDown になると、以降のルートを
 // 「ファイル書き込みなしでスキップ」したり、レンダリング前の空シェルのまま
@@ -47,7 +53,6 @@ try {
 // バイパスしてしまうため、ビルド後に各ルートの出力を検証し、
 // 「空」または「シェルと同一（未レンダリング）」なら削除して
 // catch-all へのフォールバックに委ねる。
-const shellContent = fs.existsSync(SHELL_HTML) ? fs.readFileSync(SHELL_HTML, "utf-8") : "";
 
 for (const route of routes) {
   const outPath =
