@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /404
+
+Sitemap: https://orb-inc.co.jp/sitemap.xml
