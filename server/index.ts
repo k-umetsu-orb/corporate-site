@@ -9,7 +9,7 @@ import { newsItems } from "../client/src/lib/data";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const NOTIFY_TO = "no-reply@orb-inc.co.jp";
+const NOTIFY_TO = "k.umezu@orb-inc.co.jp";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
