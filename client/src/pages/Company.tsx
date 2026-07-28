@@ -16,7 +16,7 @@ const companyInfo = [
   { label: "設立", value: "2024年8月" },
   { label: "代表者", value: "檜森 大河" },
   { label: "所在地", value: "〒108-0074 東京都港区高輪2丁目14-17グレイス高輪905" },
-  { label: "事業内容", value: "会計事務所向け支援(営業支援/人材紹介/AX支援)、組織コンサルティング(採用支援/組織支援)" }
+  { label: "事業内容", value: "会計事務所向け支援(営業支援/人材紹介/AX支援)\n組織コンサルティング(採用支援/組織支援)" }
 ];
 
 const values = [
@@ -149,7 +149,7 @@ export default function Company() {
                       <th className="py-4 pr-8 text-left text-sm font-medium text-foreground w-36 md:w-44 align-top">
                         {row.label}
                       </th>
-                      <td className="py-4 text-sm text-muted-foreground">
+                      <td className="py-4 text-sm text-muted-foreground whitespace-pre-line">
                         {row.value}
                       </td>
                     </tr>

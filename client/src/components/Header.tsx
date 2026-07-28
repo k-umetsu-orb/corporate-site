@@ -43,6 +43,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [openMobileAccordion, setOpenMobileAccordion] = useState<string | null>(null);
   const [location] = useLocation();
 
   useEffect(() => {
@@ -54,6 +55,7 @@ export default function Header() {
   useEffect(() => {
     setMobileOpen(false);
     setOpenDropdown(null);
+    setOpenMobileAccordion(null);
   }, [location]);
 
   return (
@@ -144,13 +146,33 @@ export default function Header() {
           <nav className="container py-4 space-y-1">
             {navItems.map((item) => (
               <div key={item.href}>
-                <Link
-                  href={item.href}
-                  className="block px-3 py-2.5 text-sm font-medium text-foreground/80 hover:text-navy transition-colors"
-                >
-                  {item.label}
-                </Link>
-                {item.groups && (
+                {item.groups ? (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setOpenMobileAccordion(
+                        openMobileAccordion === item.href ? null : item.href
+                      )
+                    }
+                    aria-expanded={openMobileAccordion === item.href}
+                    className="w-full flex items-center justify-between px-3 py-2.5 text-sm font-medium text-foreground/80 hover:text-navy transition-colors"
+                  >
+                    {item.label}
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform ${
+                        openMobileAccordion === item.href ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                ) : (
+                  <Link
+                    href={item.href}
+                    className="block px-3 py-2.5 text-sm font-medium text-foreground/80 hover:text-navy transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                )}
+                {item.groups && openMobileAccordion === item.href && (
                   <div className="pl-6 space-y-3 pb-2">
                     {item.groups.map((group) => (
                       <div key={group.href}>
