@@ -16,7 +16,7 @@ const companyInfo = [
   { label: "設立", value: "2024年8月" },
   { label: "代表者", value: "檜森 大河" },
   { label: "所在地", value: "〒108-0074 東京都港区高輪2丁目14-17グレイス高輪905" },
-  { label: "事業内容", value: "会計事務所向け営業支援/人材紹介/AX支援" }
+  { label: "事業内容", value: "会計事務所向け支援(営業支援/人材紹介/AX支援)、組織コンサルティング(採用支援/組織支援)" }
 ];
 
 const values = [
@@ -45,7 +45,7 @@ const values = [
 export default function Company() {
   useSEO({
     title: "会社概要",
-    description: "orb株式会社の会社概要。会計事務所向けに営業支援・人材紹介・AX支援を提供するコンサルティングファームです。",
+    description: "orb株式会社の会社概要。会計事務所向け支援(営業支援・人材紹介・AX支援)と組織コンサルティング(採用支援・組織支援)を提供するコンサルティングファームです。",
     path: "/company",
   });
 

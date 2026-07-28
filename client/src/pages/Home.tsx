@@ -35,7 +35,7 @@ export default function Home() {
     <Layout>
       <StructuredData data={organizationSchema} />
       {/* ===== Hero ===== */}
-      <section className="relative min-h-[85vh] flex items-center overflow-hidden">
+      <section className="relative min-h-[50vh] md:min-h-[85vh] flex items-center overflow-hidden">
         <div className="absolute inset-0">
           <img
             src={IMAGES.hero}
@@ -44,13 +44,13 @@ export default function Home() {
           />
           <div className="absolute inset-0 bg-white/70" />
         </div>
-        <div className="relative container py-20">
+        <div className="relative container py-12 md:py-20">
           <div className="max-w-2xl">
             <p className="font-display text-xs font-semibold tracking-[0.3em] uppercase text-navy/60">
               For Your Growth
             </p>
             <h1 className="mt-4 text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground leading-[1.15]">
-              貴社の成長を<br />
+              組織の成長を<br />
               <span className="text-navy">仕組みで支える</span>
             </h1>
             <p className="mt-6 text-sm md:text-base text-foreground/70 leading-relaxed max-w-lg">

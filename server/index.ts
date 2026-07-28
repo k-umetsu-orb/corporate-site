@@ -409,7 +409,7 @@ async function startServer() {
     },
     "/company": {
       title: `会社概要 | ${SITE_NAME}`,
-      description: "orb株式会社の会社概要。会計事務所向けに営業支援・人材紹介・AX支援を提供するコンサルティングファームです。",
+      description: "orb株式会社の会社概要。会計事務所向け支援(営業支援・人材紹介・AX支援)と組織コンサルティング(採用支援・組織支援)を提供するコンサルティングファームです。",
     },
     "/company/message": {
       title: `代表メッセージ | ${SITE_NAME}`,
