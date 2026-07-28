@@ -19,7 +19,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 const FROM_EMAIL =
   process.env.RESEND_FROM ||
-  "株式会社orb <no-reply@orb-inc.co.jp>";
+  "orb株式会社 <no-reply@orb-inc.co.jp>";
 
 function escapeHtml(text: string) {
   return text
@@ -44,7 +44,7 @@ async function sendEmail({
   const { error } = await resend.emails.send({
     from: FROM_EMAIL,
     to: Array.isArray(to) ? to : [to],
-    reply_to: replyTo,
+    replyTo: replyTo,
     subject,
     html: `<pre style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; white-space: pre-wrap; line-height: 1.7;">${escapeHtml(
       text,
@@ -148,7 +148,7 @@ async function startServer() {
             "※本メールは自動送信です。",
             "",
             "□■━━━━━━━━━━━━━━━━━━━━━━━",
-            "株式会社orb",
+            "orb株式会社",
             "〒108-0074",
             "東京都港区高輪2丁目14-17グレイス高輪905",
             "https://orb-inc.co.jp/",
@@ -223,7 +223,7 @@ async function startServer() {
             "※本メールは自動送信です。",
             "",
             "□■━━━━━━━━━━━━━━━━━━━━━━━",
-            "株式会社orb",
+            "orb株式会社",
             "〒108-0074",
             "東京都港区高輪2丁目14-17グレイス高輪905",
             "https://orb-inc.co.jp/",
@@ -295,7 +295,7 @@ async function startServer() {
             "※本メールは自動送信です。",
             "",
             "□■━━━━━━━━━━━━━━━━━━━━━━━",
-            "株式会社orb",
+            "orb株式会社",
             "〒108-0074",
             "東京都港区高輪2丁目14-17グレイス高輪905",
             "https://orb-inc.co.jp/",
