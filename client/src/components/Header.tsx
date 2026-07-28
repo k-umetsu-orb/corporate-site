@@ -12,10 +12,24 @@ const navItems = [
   {
     label: "サービス",
     href: "/service",
-    children: [
-      { label: "営業支援", href: "/service/sales-support" },
-      { label: "人材紹介", href: "/service/recruitment-support" },
-      { label: "AX支援", href: "/service/ai-transformation-support" },
+    groups: [
+      {
+        label: "会計事務所向けサービス",
+        href: "/service/accounting-firm",
+        children: [
+          { label: "営業支援", href: "/service/accounting-firm/sales-support" },
+          { label: "人材紹介", href: "/service/accounting-firm/recruitment-support" },
+          { label: "AX支援", href: "/service/accounting-firm/ai-transformation-support" },
+        ],
+      },
+      {
+        label: "組織コンサルティングサービス",
+        href: "/service/organizational-consulting",
+        children: [
+          { label: "採用支援", href: "/service/organizational-consulting/recruitment-support" },
+          { label: "組織支援", href: "/service/organizational-consulting/organizational-support" },
+        ],
+      },
     ],
   },
   { label: "実績", href: "/works" },
@@ -65,7 +79,7 @@ export default function Header() {
             <div
               key={item.href}
               className="relative"
-              onMouseEnter={() => item.children && setOpenDropdown(item.href)}
+              onMouseEnter={() => item.groups && setOpenDropdown(item.href)}
               onMouseLeave={() => setOpenDropdown(null)}
             >
               <Link
@@ -77,19 +91,29 @@ export default function Header() {
                 }`}
               >
                 {item.label}
-                {item.children && <ChevronDown className="w-3 h-3" />}
+                {item.groups && <ChevronDown className="w-3 h-3" />}
               </Link>
-              {item.children && openDropdown === item.href && (
+              {item.groups && openDropdown === item.href && (
                 <div className="absolute top-full left-0 pt-1">
-                  <div className="bg-white rounded-md shadow-lg border border-border py-1 min-w-[180px]">
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.href}
-                        href={child.href}
-                        className="block px-4 py-2 text-sm text-foreground/80 hover:bg-secondary hover:text-navy transition-colors"
-                      >
-                        {child.label}
-                      </Link>
+                  <div className="bg-white rounded-md shadow-lg border border-border py-2 min-w-[240px]">
+                    {item.groups.map((group, gi) => (
+                      <div key={group.href} className={gi > 0 ? "mt-2 pt-2 border-t border-border" : ""}>
+                        <Link
+                          href={group.href}
+                          className="block px-4 py-1.5 text-xs font-semibold tracking-wide text-muted-foreground hover:text-navy transition-colors"
+                        >
+                          {group.label}
+                        </Link>
+                        {group.children.map((child) => (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            className="block px-4 py-2 text-sm text-foreground/80 hover:bg-secondary hover:text-navy transition-colors"
+                          >
+                            {child.label}
+                          </Link>
+                        ))}
+                      </div>
                     ))}
                   </div>
                 </div>
@@ -126,16 +150,28 @@ export default function Header() {
                 >
                   {item.label}
                 </Link>
-                {item.children && (
-                  <div className="pl-6 space-y-1">
-                    {item.children.map((child) => (
-                      <Link
-                        key={child.href}
-                        href={child.href}
-                        className="block px-3 py-2 text-sm text-muted-foreground hover:text-navy transition-colors"
-                      >
-                        {child.label}
-                      </Link>
+                {item.groups && (
+                  <div className="pl-6 space-y-3 pb-2">
+                    {item.groups.map((group) => (
+                      <div key={group.href}>
+                        <Link
+                          href={group.href}
+                          className="block px-3 py-1.5 text-xs font-semibold tracking-wide text-muted-foreground hover:text-navy transition-colors"
+                        >
+                          {group.label}
+                        </Link>
+                        <div className="pl-3 space-y-1">
+                          {group.children.map((child) => (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              className="block px-3 py-2 text-sm text-muted-foreground hover:text-navy transition-colors"
+                            >
+                              {child.label}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
                     ))}
                   </div>
                 )}

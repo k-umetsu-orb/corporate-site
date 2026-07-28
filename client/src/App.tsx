@@ -9,7 +9,8 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 
 // Pages
 import Home from "./pages/Home";
-import ServiceList from "./pages/ServiceList";
+import ServiceTop from "./pages/ServiceTop";
+import ServiceCategoryList from "./pages/ServiceCategoryList";
 import ServiceDetail from "./pages/ServiceDetail";
 import WorksList from "./pages/WorksList";
 import WorksDetail from "./pages/WorksDetail";
@@ -38,8 +39,9 @@ function Router() {
       <ScrollToTop />
       <Switch>
         <Route path="/" component={Home} />
-        <Route path="/service" component={ServiceList} />
-        <Route path="/service/:slug" component={ServiceDetail} />
+        <Route path="/service" component={ServiceTop} />
+        <Route path="/service/:category" component={ServiceCategoryList} />
+        <Route path="/service/:category/:slug" component={ServiceDetail} />
         <Route path="/works" component={WorksList} />
         <Route path="/works/:slug" component={WorksDetail} />
         <Route path="/seminar" component={SeminarList} />

@@ -100,6 +100,17 @@ async function startServer() {
     res.redirect(301, "/news/website-renewal-2026");
   });
 
+  // サービスページのURL構造変更（会計事務所向けサービスを /service/accounting-firm 配下へ移動）
+  app.get("/service/sales-support", (_req, res) => {
+    res.redirect(301, "/service/accounting-firm/sales-support");
+  });
+  app.get("/service/recruitment-support", (_req, res) => {
+    res.redirect(301, "/service/accounting-firm/recruitment-support");
+  });
+  app.get("/service/ai-transformation-support", (_req, res) => {
+    res.redirect(301, "/service/accounting-firm/ai-transformation-support");
+  });
+
   // ── お問い合わせ送信 ──────────────────────────────
   app.post("/api/contact", async (req, res) => {
     const { inquiryType, company, name, email, phone, message } =
@@ -350,19 +361,35 @@ async function startServer() {
     },
     "/service": {
       title: `サービス一覧 | ${SITE_NAME}`,
+      description: "orb株式会社が提供する会計事務所向け支援サービスと組織コンサルティングサービスの一覧です。営業支援・人材紹介・AX支援から、採用支援・組織支援まで、事業成長を支える専門コンサルティングをワンストップでご提供します。",
+    },
+    "/service/accounting-firm": {
+      title: `会計事務所向けサービス | ${SITE_NAME}`,
       description: "会計事務所向けの営業支援・人材紹介・AX支援サービスの一覧。業界特有の課題を深く理解した専門コンサルタントが、実効性の高い戦略をご提案します。",
     },
-    "/service/sales-support": {
+    "/service/accounting-firm/sales-support": {
       title: `営業支援 | ${SITE_NAME}`,
       description: "紹介や顧問契約に依存した経営から脱却し、安定的に新規顧客を獲得する仕組みを構築します。Webマーケティング戦略の立案、リード獲得、提案の標準化まで、一気通貫でサポートします。",
     },
-    "/service/recruitment-support": {
+    "/service/accounting-firm/recruitment-support": {
       title: `人材紹介 | ${SITE_NAME}`,
       description: "採用市場で「選ばれる事務所」になるための最適な人材をご紹介します。求める人材像の明確化から、候補者のご紹介、選考プロセスのサポート、入所後の定着支援まで、トータルでご支援します。",
     },
-    "/service/ai-transformation-support": {
+    "/service/accounting-firm/ai-transformation-support": {
       title: `AX支援 | ${SITE_NAME}`,
       description: "記帳・仕訳の自動化からクライアント対応の効率化まで、会計事務所に特化したAI活用戦略を設計・実行します。ツール選定から導入・定着支援まで一気通貫でサポートします。",
+    },
+    "/service/organizational-consulting": {
+      title: `組織コンサルティングサービス | ${SITE_NAME}`,
+      description: "採用支援・組織支援など、企業の「人と組織」の課題を戦略から実行・定着まで支援する組織コンサルティングサービスの一覧です。",
+    },
+    "/service/organizational-consulting/recruitment-support": {
+      title: `採用支援 | ${SITE_NAME}`,
+      description: "採用戦略の設計からブランディング、選考プロセスの構築まで、貴社に合った人材を惹きつけ、口説き、定着させる採用の仕組みをつくります。",
+    },
+    "/service/organizational-consulting/organizational-support": {
+      title: `組織支援 | ${SITE_NAME}`,
+      description: "評価制度・マネジメント・エンゲージメントなど、組織の土台を整備し、事業成長を支える強い組織づくりを支援します。",
     },
     "/works": {
       title: `支援実績 | ${SITE_NAME}`,
@@ -405,6 +432,8 @@ async function startServer() {
     }
     // 完全一致
     if (staticMeta[reqPath]) return staticMeta[reqPath];
+    // /service/:category/:slug (未定義の組み合わせのフォールバック)
+    if (reqPath.startsWith("/service/")) return { title: `サービス一覧 | ${SITE_NAME}`, description: "orb株式会社が提供するサービスの詳細です。" };
     // /works/:slug
     if (reqPath.startsWith("/works/")) return { title: `支援実績 | ${SITE_NAME}`, description: "会計事務所向け支援実績の詳細です。" };
     // /news/:id

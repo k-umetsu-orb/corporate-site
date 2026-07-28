@@ -27,7 +27,7 @@ export default function CTASection({ variant: _variant = "full" }: CTASectionPro
           ご相談ください
         </h2>
         <p className="mt-4 text-sm md:text-base text-white/70 max-w-xl mx-auto leading-relaxed">
-          課題を抱える会計事務所様へ。まずは無料相談で、貴事務所の現状と課題をお聞かせください。
+          まずは無料相談で、貴社の現状と課題をお聞かせください。
           最適なソリューションをご提案いたします。
         </p>
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">

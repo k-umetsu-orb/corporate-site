@@ -8,25 +8,49 @@
   </url>
   <url>
     <loc>https://orb-inc.co.jp/service</loc>
-    <lastmod>2026-06-15</lastmod>
+    <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://orb-inc.co.jp/service/sales-support</loc>
-    <lastmod>2026-06-15</lastmod>
+    <loc>https://orb-inc.co.jp/service/accounting-firm</loc>
+    <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://orb-inc.co.jp/service/recruitment-support</loc>
-    <lastmod>2026-06-15</lastmod>
+    <loc>https://orb-inc.co.jp/service/accounting-firm/sales-support</loc>
+    <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://orb-inc.co.jp/service/ai-transformation-support</loc>
-    <lastmod>2026-06-15</lastmod>
+    <loc>https://orb-inc.co.jp/service/accounting-firm/recruitment-support</loc>
+    <lastmod>2026-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://orb-inc.co.jp/service/accounting-firm/ai-transformation-support</loc>
+    <lastmod>2026-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://orb-inc.co.jp/service/organizational-consulting</loc>
+    <lastmod>2026-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://orb-inc.co.jp/service/organizational-consulting/recruitment-support</loc>
+    <lastmod>2026-07-28</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://orb-inc.co.jp/service/organizational-consulting/organizational-support</loc>
+    <lastmod>2026-07-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

@@ -24,7 +24,7 @@ import {
   AccordionTrigger,
   AccordionContent,
 } from "@/components/ui/accordion";
-import { services, works, seminars, downloads, type Service } from "@/lib/data";
+import { services, serviceCategories, works, seminars, downloads, type Service } from "@/lib/data";
 import { useSEO } from "@/hooks/useSEO";
 import StructuredData, { breadcrumbSchema } from "@/components/StructuredData";
 import NotFound from "./NotFound";
@@ -35,30 +35,30 @@ const scopeIcons = [TrendingUp, Users, ClipboardCheck];
 /* ── Helper: related works for this service ── */
 function getRelatedWorks(service: Service) {
   const areaMap: Record<string, string> = {
-    "sales-support": "営業支援",
-    "recruitment-support": "人材紹介",
+    "accounting-firm/sales-support": "営業支援",
+    "accounting-firm/recruitment-support": "人材紹介",
   };
-  const area = areaMap[service.slug];
+  const area = areaMap[`${service.category}/${service.slug}`];
   return works.filter((w) => w.area === area).slice(0, 3);
 }
 
 /* ── Helper: related seminars ── */
 function getRelatedSeminars(service: Service) {
   const tagMap: Record<string, string> = {
-    "sales-support": "営業支援",
-    "recruitment-support": "人材紹介",
+    "accounting-firm/sales-support": "営業支援",
+    "accounting-firm/recruitment-support": "人材紹介",
   };
-  const tag = tagMap[service.slug];
+  const tag = tagMap[`${service.category}/${service.slug}`];
   return seminars.filter((s) => s.tags.includes(tag)).slice(0, 2);
 }
 
 /* ── Helper: related downloads ── */
 function getRelatedDownloads(service: Service) {
   const tagMap: Record<string, string> = {
-    "sales-support": "営業支援",
-    "recruitment-support": "人材紹介",
+    "accounting-firm/sales-support": "営業支援",
+    "accounting-firm/recruitment-support": "人材紹介",
   };
-  const tag = tagMap[service.slug];
+  const tag = tagMap[`${service.category}/${service.slug}`];
   return downloads.filter((d) => d.tags.includes(tag)).slice(0, 3);
 }
 
@@ -66,8 +66,9 @@ function getRelatedDownloads(service: Service) {
    Main Component
    ══════════════════════════════════════════════════════════════ */
 export default function ServiceDetail() {
-  const { slug } = useParams<{ slug: string }>();
-  const service = services.find((s) => s.slug === slug);
+  const { category, slug } = useParams<{ category: string; slug: string }>();
+  const service = services.find((s) => s.category === category && s.slug === slug);
+  const categoryData = serviceCategories.find((c) => c.slug === category);
 
   const relatedWorks = useMemo(
     () => (service ? getRelatedWorks(service) : []),
@@ -85,15 +86,16 @@ export default function ServiceDetail() {
   useSEO({
     title: service ? service.title : "サービス詳細",
     description: service ? service.description : "",
-    path: `/service/${slug}`,
+    path: `/service/${category}/${slug}`,
   });
 
-  if (!service) return <NotFound />;
+  if (!service || !categoryData) return <NotFound />;
 
   const bcSchema = breadcrumbSchema([
     { name: "ホーム", url: "https://xxxx.co.jp/" },
     { name: "サービス一覧", url: "https://xxxx.co.jp/service" },
-    { name: service.title, url: `https://xxxx.co.jp/service/${service.slug}` },
+    { name: categoryData.title, url: `https://xxxx.co.jp/service/${category}` },
+    { name: service.title, url: `https://xxxx.co.jp/service/${category}/${service.slug}` },
   ]);
 
   return (
@@ -105,6 +107,7 @@ export default function ServiceDetail() {
         service={service}
         breadcrumbs={[
           { label: "サービス一覧", href: "/service" },
+          { label: categoryData.title, href: `/service/${category}` },
           { label: service.title },
         ]}
       />

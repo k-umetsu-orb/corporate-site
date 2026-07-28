@@ -9,9 +9,8 @@ const footerLinks = [
   {
     links: [
       { label: "サービス一覧", href: "/service" },
-      { label: "営業支援", href: "/service/sales-support" },
-      { label: "人材紹介", href: "/service/recruitment-support" },
-      { label: "AX支援", href: "/service/ai-transformation-support" },
+      { label: "会計事務所向けサービス", href: "/service/accounting-firm" },
+      { label: "組織コンサルティングサービス", href: "/service/organizational-consulting" },
     ],
   },
   {

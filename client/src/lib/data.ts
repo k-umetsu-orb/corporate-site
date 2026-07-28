@@ -47,8 +47,68 @@ export interface ServiceResultHighlight {
   after: string;
 }
 
+export type ServiceCategorySlug = "accounting-firm" | "organizational-consulting";
+
+export interface ServiceCategory {
+  slug: ServiceCategorySlug;
+  title: string;
+  titleEn: string;
+  seoDescription: string;
+  cardDescription: string;
+  intro: string;
+  whyChooseUs: { title: string; description: string }[];
+}
+
+export const serviceCategories: ServiceCategory[] = [
+  {
+    slug: "accounting-firm",
+    title: "会計事務所向けサービス",
+    titleEn: "For Accounting Firms",
+    seoDescription: "会計事務所向けの営業支援・人材紹介・AX支援サービスの一覧。業界特有の課題を深く理解した専門コンサルタントが、実効性の高い戦略をご提案します。",
+    cardDescription: "紹介依存からの脱却、採用力の強化、AIによる業務効率化まで。会計事務所特有の経営課題に特化した支援を行います。",
+    intro: "orbは、会計事務所に特化した支援サービスを提供しています。業界特有の課題を深く理解しているからこそ、実効性の高い戦略をご提案し、戦略から実行まで一気通貫で伴走します。",
+    whyChooseUs: [
+      {
+        title: "会計事務所に特化",
+        description: "業界特有の課題や商習慣を深く理解。50社以上の支援実績から体系化したノウハウで、実効性の高い戦略をご提案します。",
+      },
+      {
+        title: "成果を出す「仕組み化」",
+        description: "属人性を排し、誰が担当しても一定の成果を出せる「型」を構築。貴事務所の資産となるノウハウを組織に定着させます。",
+      },
+      {
+        title: "戦略から実行まで伴走",
+        description: "戦略立案だけで終わらず、施策の実行・改善まで伴走。月次レビューとKPIモニタリングで確実に成果を追求します。",
+      },
+    ],
+  },
+  {
+    slug: "organizational-consulting",
+    title: "組織コンサルティングサービス",
+    titleEn: "Organizational Consulting",
+    seoDescription: "採用支援・組織支援など、企業の「人と組織」の課題を戦略から実行・定着まで支援する組織コンサルティングサービスの一覧です。",
+    cardDescription: "採用力の強化と、人が育ち活躍し続ける組織づくり。あらゆる企業の人と組織の課題を戦略から実行まで支援します。",
+    intro: "orbは、事業成長を支える組織づくりをご支援しています。採用力の強化から評価・マネジメント制度の整備まで、企業の「人と組織」に関する課題に、戦略設計から実行・定着まで一気通貫で伴走します。",
+    whyChooseUs: [
+      {
+        title: "事業戦略からの逆算設計",
+        description: "単なる制度導入や施策の実行ではなく、事業戦略・経営課題に紐づいた組織設計をご提案します。",
+      },
+      {
+        title: "現場に定着する「仕組み化」",
+        description: "属人的な運用に頼らず、誰が担当しても機能する制度・プロセスを構築。組織の資産として定着させます。",
+      },
+      {
+        title: "戦略から実行・定着まで伴走",
+        description: "設計だけで終わらせず、導入後の運用・定着まで伴走。継続的なモニタリングで確実な変化を追求します。",
+      },
+    ],
+  },
+];
+
 export interface Service {
   slug: string;
+  category: ServiceCategorySlug;
   title: string;
   titleEn: string;
   catchphrase: string;
@@ -69,6 +129,7 @@ export interface Service {
 export const services: Service[] = [
   {
     slug: "sales-support",
+    category: "accounting-firm",
     title: "営業支援",
     titleEn: "Sales Support",
     catchphrase: "営業力を仕組みで伸ばす",
@@ -192,6 +253,7 @@ export const services: Service[] = [
   },
   {
     slug: "recruitment-support",
+    category: "accounting-firm",
     title: "人材紹介",
     titleEn: "Recruitment Support",
     catchphrase: "選ばれる会計事務所をつくる",
@@ -315,6 +377,7 @@ export const services: Service[] = [
   },
   {
     slug: "ai-transformation-support",
+    category: "accounting-firm",
     title: "AX支援",
     titleEn: "AI Transformation Support",
     catchphrase: "会計業務をAIで変革する",
@@ -433,6 +496,228 @@ export const services: Service[] = [
       {
         question: "既存のシステムと連携できますか？",
         answer: "対応可能な場合が多いです。ご利用中のシステムをヒアリングした上で、最適な連携方法をご提案します。",
+      },
+    ],
+  },
+  {
+    slug: "recruitment-support",
+    category: "organizational-consulting",
+    title: "採用支援",
+    titleEn: "Recruitment Support",
+    catchphrase: "採用力を仕組みで強化する",
+    subcopy: "採用戦略の設計からブランディング、選考プロセスの構築まで、貴社に合った人材を惹きつけ、口説き、定着させる採用の仕組みをつくります。",
+    description: "採用競争が激化する中、求人を出すだけでは優秀な人材は集まりません。採用ペルソナの設計から、自社の魅力を伝える採用ブランディング、候補者を見極め口説く選考プロセスの構築まで、貴社の採用活動を戦略的に支援します。",
+    challenges: [
+      "求人媒体に出しても応募が思うように集まらない",
+      "欲しい人材像が社内で言語化・共有できていない",
+      "選考辞退や内定辞退が続いている",
+      "採用担当者の勘と経験に頼った属人的な採用になっている",
+    ],
+    image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800&h=500&fit=crop",
+    features: [
+      {
+        title: "採用戦略・ペルソナ設計",
+        description: "事業戦略から逆算した採用要件の定義と、求める人材像を明確にするペルソナ設計を行います。",
+        example: "採用要件定義書、採用ペルソナシート",
+      },
+      {
+        title: "採用ブランディング",
+        description: "候補者に選ばれるための自社の魅力を言語化し、採用サイトや求人票などのコンテンツに落とし込みます。",
+        example: "採用サイト構成案、採用ピッチ資料",
+      },
+      {
+        title: "選考プロセス構築",
+        description: "見極めと口説きを両立する面接設計により、ミスマッチのない選考体制を構築します。",
+        example: "面接評価シート、オファー面談トークスクリプト",
+      },
+      {
+        title: "採用KPI設計とデータ活用",
+        description: "母集団形成から内定承諾までの歩留まりを可視化し、改善ポイントを継続的に特定します。",
+        example: "採用ダッシュボード、歩留まり分析レポート",
+      },
+    ],
+    resultHighlights: [
+      { label: "月間応募数", before: "5名", after: "28名" },
+      { label: "内定承諾率", before: "45%", after: "82%" },
+      { label: "採用充足までの期間", before: "8ヶ月", after: "3ヶ月" },
+    ],
+    scopeCategories: [
+      {
+        category: "採用戦略",
+        description: "採用の方針・ターゲット設計",
+        tasks: ["採用ペルソナ策定", "採用要件定義", "採用計画・予算設計"],
+      },
+      {
+        category: "採用ブランディング",
+        description: "求職者に選ばれるブランドづくり",
+        tasks: ["採用サイト・コンテンツ設計", "求人票リライト", "SNS・オウンドメディア活用"],
+      },
+      {
+        category: "選考・オファー",
+        description: "面接から内定承諾までの仕組みづくり",
+        tasks: ["面接設計・評価基準策定", "オファー面談支援", "内定者フォロー設計"],
+      },
+    ],
+    supportDetails: [
+      "月2回の定例ミーティングによる進捗確認・方針調整",
+      "Slack等のチャットツールでの日常的な相談対応",
+      "月次レポートによる効果測定と改善提案",
+      "担当コンサルタントによる伴走支援",
+    ],
+    process: [
+      {
+        step: 1,
+        title: "ヒアリング・現状分析",
+        description: "貴社の採用課題、求める人材像、競合状況を詳しくヒアリングします。",
+        deliverable: "採用課題分析レポート",
+        duration: "1〜2週間",
+      },
+      {
+        step: 2,
+        title: "採用戦略・ペルソナ策定",
+        description: "分析結果をもとに、採用ペルソナと3〜6ヶ月の採用戦略ロードマップを作成します。",
+        deliverable: "採用戦略ロードマップ",
+        duration: "2週間",
+      },
+      {
+        step: 3,
+        title: "採用活動の実行・改善",
+        description: "定例ミーティングで進捗を確認しながら、採用施策を実行・改善していきます。",
+        deliverable: "月次採用レポート",
+        duration: "3〜6ヶ月〜",
+      },
+    ],
+    deliverables: [
+      "採用課題分析レポート",
+      "採用ペルソナシート",
+      "採用戦略ロードマップ",
+      "面接評価シート",
+      "月次採用レポート",
+    ],
+    testimonials: [],
+    faq: [
+      {
+        question: "中途採用だけでなく新卒採用にも対応できますか？",
+        answer: "はい。新卒・中途を問わず対応します。貴社の採用計画に応じて最適なチャネル・プロセスをご提案します。",
+      },
+      {
+        question: "採用媒体の運用代行も可能ですか？",
+        answer: "はい。求人票の作成から掲載、スカウト送付まで一部代行が可能です。",
+      },
+      {
+        question: "何名からの採用支援に対応していますか？",
+        answer: "1名採用から複数名の同時採用まで、規模を問わずご支援します。",
+      },
+    ],
+  },
+  {
+    slug: "organizational-support",
+    category: "organizational-consulting",
+    title: "組織支援",
+    titleEn: "Organizational Support",
+    catchphrase: "人が育つ強い組織をつくる",
+    subcopy: "評価制度・マネジメント・エンゲージメントなど、組織の土台を整備し、事業成長を支える強い組織づくりを支援します。",
+    description: "事業拡大のフェーズで生じる組織課題—評価制度の形骸化、マネジメント層の育成不足、離職率の高さ—を解消し、人が育ち、活躍し続ける組織の仕組みを構築します。現状分析から制度設計、運用定着まで一気通貫でご支援します。",
+    challenges: [
+      "評価制度が形骸化しており、社員の納得感が低い",
+      "管理職がプレイヤー業務に追われ、マネジメントができていない",
+      "離職率が高く、採用してもすぐに辞めてしまう",
+      "組織の理念やビジョンが現場に浸透していない",
+    ],
+    image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&h=500&fit=crop",
+    features: [
+      {
+        title: "組織診断・課題の可視化",
+        description: "サーベイやヒアリングを通じて、組織課題を定量・定性の両面から可視化します。",
+        example: "組織サーベイ、課題分析レポート",
+      },
+      {
+        title: "人事評価制度の設計",
+        description: "事業戦略と連動した評価・等級制度を設計し、社員の納得感と成長実感を高めます。",
+        example: "等級定義書、評価シート",
+      },
+      {
+        title: "マネジメント研修・育成",
+        description: "管理職のマネジメントスキルを体系的に育成し、プレイングマネージャーの負荷を軽減します。",
+        example: "研修プログラム、1on1ガイドライン",
+      },
+      {
+        title: "エンゲージメント・定着支援",
+        description: "理念浸透施策や定期フォローを通じて、組織の一体感を醸成し離職を防ぎます。",
+        example: "エンゲージメントサーベイ、施策実行計画",
+      },
+    ],
+    resultHighlights: [
+      { label: "従業員エンゲージメントスコア", before: "42点", after: "78点" },
+      { label: "離職率", before: "18%", after: "6%" },
+      { label: "管理職の1on1実施率", before: "20%", after: "95%" },
+    ],
+    scopeCategories: [
+      {
+        category: "組織診断",
+        description: "現状の可視化と課題の構造化",
+        tasks: ["組織サーベイ実施", "現場ヒアリング", "課題の構造化"],
+      },
+      {
+        category: "制度設計",
+        description: "評価・報酬・目標管理の仕組みづくり",
+        tasks: ["評価・等級制度設計", "報酬制度設計", "目標管理制度(MBO/OKR)導入"],
+      },
+      {
+        category: "人材育成・定着",
+        description: "マネジメント強化とエンゲージメント向上",
+        tasks: ["マネジメント研修", "1on1導入支援", "エンゲージメント施策設計"],
+      },
+    ],
+    supportDetails: [
+      "月2回の定例ミーティングによる進捗確認・方針調整",
+      "Slack等のチャットツールでの日常的な相談対応",
+      "月次レポートによる効果測定と改善提案",
+      "担当コンサルタントによる伴走支援",
+    ],
+    process: [
+      {
+        step: 1,
+        title: "現状分析・組織診断",
+        description: "組織サーベイとヒアリングにより、現状の組織課題を構造的に把握します。",
+        deliverable: "組織診断レポート",
+        duration: "2〜3週間",
+      },
+      {
+        step: 2,
+        title: "制度・施策設計",
+        description: "診断結果をもとに、評価制度やマネジメント施策の設計を行います。",
+        deliverable: "制度設計ドキュメント",
+        duration: "3〜4週間",
+      },
+      {
+        step: 3,
+        title: "導入・定着支援",
+        description: "制度・施策の導入から、現場に定着するまで継続的にモニタリング・改善します。",
+        deliverable: "月次モニタリングレポート",
+        duration: "3〜6ヶ月〜",
+      },
+    ],
+    deliverables: [
+      "組織診断レポート",
+      "評価・等級制度設計書",
+      "マネジメント研修資料",
+      "1on1運用ガイドライン",
+      "月次モニタリングレポート",
+    ],
+    testimonials: [],
+    faq: [
+      {
+        question: "小規模な組織でも制度設計は可能ですか？",
+        answer: "はい。10名規模の組織から対応可能です。組織規模に応じてシンプルな制度からご提案します。",
+      },
+      {
+        question: "制度設計だけでなく運用の伴走もお願いできますか？",
+        answer: "はい。制度は作って終わりではなく、現場に定着するまで運用面も伴走してご支援します。",
+      },
+      {
+        question: "経営層向けの研修にも対応していますか？",
+        answer: "はい。管理職だけでなく、経営層向けの組織開発・マネジメント研修にも対応しています。",
       },
     ],
   },
