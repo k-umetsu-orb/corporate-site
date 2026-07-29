@@ -359,7 +359,7 @@ async function startServer() {
   const staticMeta: Record<string, MetaEntry> = {
     "/": {
       title: SITE_NAME,
-      description: "orb株式会社のコーポレートサイトです。orbでは会計事務所向けの支援サービスと組織コンサルティングサービスを提供。組織の持続的な成長を仕組み化で支援しています。",
+      description: "orb株式会社の公式サイトです。会社概要や事業内容、支援実績などを紹介しています。私たちは組織の持続的な成長を仕組み化で支援し、働く人が力を発揮しやすい環境を作ることを目指しています。",
     },
     "/service": {
       title: `サービス一覧 | ${SITE_NAME}`,
