@@ -16,16 +16,27 @@ function AnimatedSection({ children, className = "" }: { children: React.ReactNo
   return <div ref={ref} className={`fade-in-up ${isVisible ? "visible" : ""} ${className}`}>{children}</div>;
 }
 
-const inquiryTypes = [
-  "営業支援について",
-  "人材紹介について",
-  "AX支援について",
-  "セミナーについて",
-  "資料請求",
-  "その他",
+const serviceCategoryOptions = [
+  "会計事務所向けサービス",
+  "組織コンサルティングサービス",
 ];
 
+const inquiryTypesByCategory: Record<string, string[]> = {
+  "会計事務所向けサービス": [
+    "営業支援について",
+    "人材紹介について",
+    "AX支援について",
+    "その他",
+  ],
+  "組織コンサルティングサービス": [
+    "採用支援について",
+    "組織支援について",
+    "その他",
+  ],
+};
+
 interface FormState {
+  serviceCategory: string;
   inquiryType: string;
   company: string;
   name: string;
@@ -39,6 +50,7 @@ export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [form, setForm] = useState<FormState>({
+    serviceCategory: "",
     inquiryType: "",
     company: "",
     name: "",
@@ -49,9 +61,13 @@ export default function Contact() {
 
   useSEO({
     title: "お問い合わせ",
-    description: "会計事務所向け営業支援・人材紹介・AX支援に関するお問い合わせ・無料相談のお申し込みはこちらから。",
+    description: "サービスに関するお問い合わせ・無料相談のお申し込みはこちらから。",
     path: "/contact",
   });
+
+  const setServiceCategory = (e: { target: { value: string } }) => {
+    setForm((prev) => ({ ...prev, serviceCategory: e.target.value, inquiryType: "" }));
+  };
 
   const set = (field: keyof FormState) => (e: { target: { value: string } }) => {
     setForm((prev) => ({ ...prev, [field]: e.target.value }));
@@ -98,6 +114,24 @@ export default function Contact() {
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* お問い合わせサービス */}
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">
+                    お問い合わせサービス <span className="text-destructive">*</span>
+                  </label>
+                  <select
+                    required
+                    value={form.serviceCategory}
+                    onChange={setServiceCategory}
+                    className={inputClass}
+                  >
+                    <option value="">選択してください</option>
+                    {serviceCategoryOptions.map((opt) => (
+                      <option key={opt} value={opt}>{opt}</option>
+                    ))}
+                  </select>
+                </div>
+
                 {/* お問い合わせ種別 */}
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">
@@ -105,12 +139,15 @@ export default function Contact() {
                   </label>
                   <select
                     required
+                    disabled={!form.serviceCategory}
                     value={form.inquiryType}
                     onChange={set("inquiryType")}
-                    className={inputClass}
+                    className={`${inputClass} disabled:opacity-60 disabled:cursor-not-allowed`}
                   >
-                    <option value="">選択してください</option>
-                    {inquiryTypes.map((type) => (
+                    <option value="">
+                      {form.serviceCategory ? "選択してください" : "先にお問い合わせサービスを選択してください"}
+                    </option>
+                    {(inquiryTypesByCategory[form.serviceCategory] ?? []).map((type) => (
                       <option key={type} value={type}>{type}</option>
                     ))}
                   </select>

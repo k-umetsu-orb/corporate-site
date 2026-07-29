@@ -13,7 +13,7 @@ import { useSEO } from "@/hooks/useSEO";
 export default function CompanyMessage() {
   useSEO({
     title: "代表メッセージ",
-    description: "orb株式会社代表からのメッセージ。会計事務所の成長を仕組みで支えるという想いをお伝えします。",
+    description: "orb株式会社代表からのメッセージ。組織の成長を仕組みで支える代表の想いをお伝えします。",
     path: "/company/message",
   });
 

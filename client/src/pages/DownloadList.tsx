@@ -11,7 +11,7 @@ import { useSEO } from "@/hooks/useSEO";
 export default function DownloadList() {
   useSEO({
     title: "資料ダウンロード",
-    description: "会計事務所の経営に役立つ資料を無料でダウンロード。サービス概要資料やお役立ち資料をご用意しています。",
+    description: "経営や組織づくりに役立つ資料を無料でダウンロード。サービス概要資料やお役立ち資料をご用意しています。",
     path: "/download",
   });
 

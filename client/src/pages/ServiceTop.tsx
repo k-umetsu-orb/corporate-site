@@ -19,7 +19,7 @@ function AnimatedSection({ children, className = "" }: { children: React.ReactNo
 export default function ServiceTop() {
   useSEO({
     title: "サービス一覧",
-    description: "orb株式会社が提供する会計事務所向け支援サービスと組織コンサルティングサービスの一覧です。営業支援・人材紹介・AX支援から、採用支援・組織支援まで、事業成長を支える専門コンサルティングをワンストップでご提供します。",
+    description: "orb株式会社が提供する会計事務所向け支援サービスと組織コンサルティングサービスの一覧です。持続的な組織成長を支える専門サービスをワンストップでご提供します。",
     path: "/service",
   });
 

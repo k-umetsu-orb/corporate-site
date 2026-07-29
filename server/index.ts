@@ -113,7 +113,7 @@ async function startServer() {
 
   // ── お問い合わせ送信 ──────────────────────────────
   app.post("/api/contact", async (req, res) => {
-    const { inquiryType, company, name, email, phone, message } =
+    const { serviceCategory, inquiryType, company, name, email, phone, message } =
       req.body as Record<string, string>;
 
     try {
@@ -122,6 +122,7 @@ async function startServer() {
         subject: `【お問い合わせ】${inquiryType || "未入力"} - ${company || "未入力"}`,
         replyTo: email,
         text: [
+          `【お問い合わせサービス】${serviceCategory || "未入力"}`,
           `【お問い合わせ種別】${inquiryType || "未入力"}`,
           `【法人名/事務所名】${company || "未入力"}`,
           `【お名前】${name || "未入力"}`,
@@ -144,6 +145,7 @@ async function startServer() {
             "このたびはお問い合わせいただきありがとうございます。",
             "以下の内容で受け付けいたしました。",
             "",
+            `【お問い合わせサービス】${serviceCategory || "未入力"}`,
             `【お問い合わせ種別】${inquiryType || "未入力"}`,
             `【法人名/事務所名】${company || "未入力"}`,
             `【お名前】${name || "未入力"}`,
@@ -357,11 +359,11 @@ async function startServer() {
   const staticMeta: Record<string, MetaEntry> = {
     "/": {
       title: SITE_NAME,
-      description: "orb株式会社のコーポレートサイトです。会計事務所に特化した営業支援・人材紹介・AX支援を提供しています。紹介に依存しない営業の仕組みと、優秀な人材を惹きつける採用の仕組みで、貴社の持続的な成長を支援します。",
+      description: "orb株式会社のコーポレートサイトです。orbでは会計事務所向けの支援サービスと組織コンサルティングサービスを提供。組織の持続的な成長を仕組み化で支援しています。",
     },
     "/service": {
       title: `サービス一覧 | ${SITE_NAME}`,
-      description: "orb株式会社が提供する会計事務所向け支援サービスと組織コンサルティングサービスの一覧です。営業支援・人材紹介・AX支援から、採用支援・組織支援まで、事業成長を支える専門コンサルティングをワンストップでご提供します。",
+      description: "orb株式会社が提供する会計事務所向け支援サービスと組織コンサルティングサービスの一覧です。持続的な組織成長を支える専門サービスをワンストップでご提供します。",
     },
     "/service/accounting-firm": {
       title: `会計事務所向けサービス | ${SITE_NAME}`,
@@ -393,7 +395,7 @@ async function startServer() {
     },
     "/works": {
       title: `支援実績 | ${SITE_NAME}`,
-      description: "会計事務所向けの営業支援・人材紹介・AX支援の実績をご紹介します。",
+      description: "orbの支援実績をご紹介します。",
     },
     "/news": {
       title: `お知らせ | ${SITE_NAME}`,
@@ -401,23 +403,23 @@ async function startServer() {
     },
     "/seminar": {
       title: `セミナー | ${SITE_NAME}`,
-      description: "会計事務所向けの営業・採用に関するセミナー情報。無料で参加いただけます。",
+      description: "経営や組織づくりに役立つセミナー情報。無料で参加いただけます。",
     },
     "/download": {
       title: `資料ダウンロード | ${SITE_NAME}`,
-      description: "会計事務所の経営に役立つ資料を無料でダウンロード。サービス概要資料やお役立ち資料をご用意しています。",
+      description: "経営や組織づくりに役立つ資料を無料でダウンロード。サービス概要資料やお役立ち資料をご用意しています。",
     },
     "/company": {
       title: `会社概要 | ${SITE_NAME}`,
-      description: "orb株式会社の会社概要。会計事務所向け支援(営業支援・人材紹介・AX支援)と組織コンサルティング(採用支援・組織支援)を提供するコンサルティングファームです。",
+      description: "orb株式会社の会社概要です。私たちは、採用・育成、営業や業務変革の支援を通じて、企業が成長し続けられる土台を整え、働く人が力を発揮しやすい環境を作ることを目指しています。",
     },
     "/company/message": {
       title: `代表メッセージ | ${SITE_NAME}`,
-      description: "orb株式会社代表からのメッセージ。会計事務所の成長を仕組みで支えるという想いをお伝えします。",
+      description: "orb株式会社代表からのメッセージ。組織の成長を仕組みで支える代表の想いをお伝えします。",
     },
     "/contact": {
       title: `お問い合わせ | ${SITE_NAME}`,
-      description: "会計事務所向け営業支援・人材紹介・AX支援に関するお問い合わせ・無料相談のお申し込みはこちらから。",
+      description: "サービスに関するお問い合わせ・無料相談のお申し込みはこちらから。",
     },
     "/privacy-policy": {
       title: `プライバシーポリシー | ${SITE_NAME}`,
@@ -435,15 +437,15 @@ async function startServer() {
     // /service/:category/:slug (未定義の組み合わせのフォールバック)
     if (reqPath.startsWith("/service/")) return { title: `サービス一覧 | ${SITE_NAME}`, description: "orb株式会社が提供するサービスの詳細です。" };
     // /works/:slug
-    if (reqPath.startsWith("/works/")) return { title: `支援実績 | ${SITE_NAME}`, description: "会計事務所向け支援実績の詳細です。" };
+    if (reqPath.startsWith("/works/")) return { title: `支援実績 | ${SITE_NAME}`, description: "orbの支援実績の詳細です。" };
     // /news/:id
     const news = newsItems.find((n) => reqPath === `/news/${n.id}`);
     if (news) return { title: `${news.title} | ${SITE_NAME}`, description: news.title };
     if (reqPath.startsWith("/news/")) return { title: `お知らせ | ${SITE_NAME}`, description: "orbからのお知らせです。" };
     // /seminar/:id
-    if (reqPath.startsWith("/seminar/")) return { title: `セミナー | ${SITE_NAME}`, description: "会計事務所向けセミナーの詳細です。" };
+    if (reqPath.startsWith("/seminar/")) return { title: `セミナー | ${SITE_NAME}`, description: "セミナーの詳細です。" };
     // /download/:slug
-    if (reqPath.startsWith("/download/")) return { title: `資料ダウンロード | ${SITE_NAME}`, description: "会計事務所の経営に役立つ資料をダウンロードいただけます。" };
+    if (reqPath.startsWith("/download/")) return { title: `資料ダウンロード | ${SITE_NAME}`, description: "経営や組織づくりに役立つ資料をダウンロードいただけます。" };
     // デフォルト
     return { title: SITE_NAME, description: "orb株式会社のコーポレートサイトです。" };
   }

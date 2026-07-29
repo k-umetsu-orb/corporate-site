@@ -11,7 +11,7 @@ import { useSEO } from "@/hooks/useSEO";
 export default function SeminarList() {
   useSEO({
     title: "セミナー",
-    description: "会計事務所向けの営業・採用に関するセミナー情報。無料で参加いただけます。",
+    description: "経営や組織づくりに役立つセミナー情報。無料で参加いただけます。",
     path: "/seminar",
   });
 
